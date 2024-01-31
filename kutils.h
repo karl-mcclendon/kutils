@@ -20,32 +20,35 @@ enum ku_stream_flags {
 struct ku_stream;
 
 /**
- * Gets the error message.
+ * Frees the backing error buffer.
  *
- * The error message is in a thread local variable. The variable has been initialized to zero, but it is bad practice to
- * access the variable before an error has been set.
+ * The error system manages a dynamic internal buffer for holding error messages. This function frees that buffer. This
+ * does not need to be called unless the memory needs to be reclaimed.
+ */
+void ku_error_clear(void);
+
+/**
+ * Gets the most recent error message.
+ *
+ * Gets a null terminating string that contains a message that describes the most recent error. If called before a
+ * message has been set the return value will be null.
  *
  * Example usage:
  * \code{.c}
  * printf("%s\n", ku_error_get());
  * \endcode
  *
- * @return a pointer to a null terminated string describing the most recent error
+ * @return a pointer to a null terminated string
  */
 const char *ku_error_get(void);
 
 /**
  * Sets the error message.
  *
- * The error message is in a thread local variable of size KU_ERROR_MESSAGE_SIZE. If an error message exceeds that
- * length it will be truncated to fit and the null terminator will be added.
+ * Max error message length is defined by MAX_ERROR_MESSAGE_LENGTH. If an error message exceeds that length it will be
+ * truncated to fit and the null terminator will be added.
  *
  * Errno may be modified by this function, but only on failure. If the function return a failure errno will be set.
- *
- * Error message onventions:
- *     * keep brief but searchable
- *     * start error messages with a lower case
- *     * do not append a newline or period
  *
  * Example usage:
  * \code{.c}

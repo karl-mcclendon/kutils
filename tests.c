@@ -24,6 +24,8 @@ run_test(
 int
 main(void)
 {
+    run_test("test_error_control", test_error_control);
+
     uint32_t required_size;
     if (ku_stream_from_file("example.txt", NULL, &required_size, KU_STREAM_FLAGS_NONE)) {
         printf("Failed to get required size: %s\n", ku_error_get());
@@ -35,8 +37,6 @@ main(void)
     if (ku_stream_from_file("example.txt", stream, &required_size, KU_STREAM_FLAGS_NONE)) {
         printf("Failed to initialize stream: %s\n", ku_error_get());
     }
-
-    run_test("test_error_control", test_error_control);
 
     return 0;
 }

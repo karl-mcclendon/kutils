@@ -6,7 +6,9 @@ test_error_control(void)
 {
     int e;
 
-    if (ku_error_get()[0] != 0) {
+    ku_error_clear();
+
+    if (ku_error_get() != NULL) {
         return -1;
     }
 

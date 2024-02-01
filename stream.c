@@ -30,32 +30,33 @@ file_stream_close(
 enum ku_success
 ku_stream_from_file(
     const char *filename,
-    void *buffer,
-    uint32_t *buffer_size,
+    struct ku_stream *stream_buffer,
+    uint32_t *stream_buffer_size,
     enum ku_stream_flags flags)
 {
-    if (buffer == NULL) {
-        *buffer_size = sizeof(struct stream_file);
+    if (stream_buffer == NULL) {
+        *stream_buffer_size = sizeof(struct stream_file);
 
         return 0;
-    } else if (*buffer_size < sizeof(struct stream_file)) {
+    }
+    else if (*stream_buffer_size < sizeof(struct stream_file)) {
         ku_error_set("io_size too small");
 
         return -1;
-    } else if (flags != KU_STREAM_FLAGS_NONE) {
+    }
+    else if (flags != KU_STREAM_FLAGS_NONE) {
         ku_error_set("unsupported flags");
 
         return -1;
     }
 
-    struct stream_file *s = (struct stream_file *) buffer;
-    s->fp = fopen(filename,"r+b");
+    struct stream_file *s = (struct stream_file *) stream_buffer;
+    s->fp = fopen(filename, "r+b");
     if (s->fp == NULL) {
         ku_error_set("could not open file: %s", strerror(errno));
 
         return -1;
     }
-
 
     s->stream.type  = STREAM_TYPE_FILE;
     s->stream.close = file_stream_close;

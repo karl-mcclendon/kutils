@@ -6,9 +6,12 @@ test_error_control(void)
 {
     int e;
 
-    ku_error_clear();
+    if (ku_error_get() == NULL) {
+        return -1;
+    }
 
-    if (ku_error_get() != NULL) {
+    e = strcmp(ku_error_get(), "");
+    if (e) {
         return -1;
     }
 
@@ -17,6 +20,7 @@ test_error_control(void)
         return -1;
     }
 
+    ku_error_get();
     e = strcmp(ku_error_get(), "test me");
     if (e) {
         return -1;

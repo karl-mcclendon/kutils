@@ -9,6 +9,9 @@ add_library(${PROJECT_NAME} STATIC
         stream.c
         error.c
         kutils.h
+        error.h
+        consts.h
+        stream.h
 )
 
 add_executable(${PROJECT_NAME}-tests
@@ -17,4 +20,7 @@ add_executable(${PROJECT_NAME}-tests
         error.c
         kutils.h
         error_tests.c
+        error.h
+        consts.h
+        stream.h
 )
